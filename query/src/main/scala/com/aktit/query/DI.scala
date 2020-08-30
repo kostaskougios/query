@@ -1,9 +1,9 @@
 package com.aktit.query
 
-import com.aktit.query.service.{SparkBeans, TableServiceBeans}
+import com.aktit.query.service.{ConsoleServiceBeans, SparkBeans, TableServiceBeans}
 
 /**
   * @author kostas.kougios
   *         30/08/2020 - 21:32
   */
-object DI extends SparkBeans with TableServiceBeans
+object DI extends SparkBeans with TableServiceBeans with ConsoleServiceBeans

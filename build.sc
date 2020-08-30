@@ -1,6 +1,7 @@
 import Dependencies._
 import coursier.maven.MavenRepository
 import mill._
+import mill.modules.Assembly.Rule
 import mill.scalalib._
 import mill.scalalib.scalafmt._
 
@@ -9,6 +10,9 @@ object query extends Common {
 
   object test extends CommonTest
 
+  override def assemblyRules = Seq(
+    Rule.Append("META-INF/services/org.apache.hadoop.fs.FileSystem", separator = "\n") // all FileSystem files will be concatenated into single file
+  ) ++ super.assemblyRules
 }
 
 trait Common extends SbtModule with ScalafmtModule {

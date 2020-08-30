@@ -11,5 +11,7 @@ import com.aktit.query.DI._
 import spark.implicits._
 
 try {
-  println("OK")
+  import consoleService._
+  mountTable("tweets", "/tmp/tweets")
+  sql("select * from tweets limit 5").show(false)
 } finally destroy()
