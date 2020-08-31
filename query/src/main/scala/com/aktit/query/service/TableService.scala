@@ -8,7 +8,7 @@ import org.apache.spark.sql.{DataFrame, SparkSession}
   *         30/08/2020 - 21:23
   */
 class TableService(spark: SparkSession) {
-  def mount(table: Table) = load(table).createGlobalTempView(table.name)
+  def mount(table: Table) = load(table).createOrReplaceTempView(table.name)
 
   def load(table: Table): DataFrame = spark.read.format(table.format).load(table.path)
 }
