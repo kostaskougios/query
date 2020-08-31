@@ -10,9 +10,10 @@ object query extends Common {
 
   object test extends CommonTest
 
-  override def assemblyRules = Seq(
-    Rule.Append("META-INF/services/org.apache.hadoop.fs.FileSystem", separator = "\n") // all FileSystem files will be concatenated into single file
-  ) ++ super.assemblyRules
+  override def assemblyRules =
+    Seq(
+      Rule.Append("META-INF/services/org.apache.hadoop.fs.FileSystem", separator = "\n") // all FileSystem files will be concatenated into single file
+    ) ++ super.assemblyRules
 }
 
 trait Common extends SbtModule with ScalafmtModule {
@@ -25,7 +26,7 @@ trait Common extends SbtModule with ScalafmtModule {
   )
 
   trait CommonTest extends Tests {
-    override def ivyDeps = Agg(Test.ScalaTest, Test.ScalaMock) ++ extraIvyDeps
+    override def ivyDeps = Agg(Test.ScalaTest, Test.ScalaMock, Utils.Diffx) ++ extraIvyDeps
 
     def extraIvyDeps: Seq[Dep] = Nil
 
@@ -61,6 +62,7 @@ object Dependencies {
     val Scopt = ivy"com.github.scopt::scopt:4.0.0-RC2"
     val JLine = ivy"org.jline:jline:3.16.0"
     val Logback = ivy"ch.qos.logback:logback-classic:1.2.3"
+    val Diffx = ivy"com.softwaremill.diffx::diffx-scalatest:0.3.29"
   }
 
 }

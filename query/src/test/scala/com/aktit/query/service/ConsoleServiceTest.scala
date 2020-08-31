@@ -1,18 +1,32 @@
 package com.aktit.query.service
 
 import com.aktit.query.testmodel.ModelBuilders.tweet
+import com.aktit.query.testmodel.Tweet
 import com.aktit.query.{AbstractSparkSuite, TestApp}
+import com.softwaremill.diffx.scalatest.DiffMatcher.matchTo
 
 /**
   * @author kostas.kougios
   *         31/08/2020 - 15:53
   */
 class ConsoleServiceTest extends AbstractSparkSuite {
-  test("mount table") {
+
+  import spark.implicits._
+
+  test("describeShort") {
     new App {
       val table = createTable("tweet", Seq(tweet()))
       consoleService.describeShort(Seq(table))
       printed should be("tweet(id bigint, by string, text string, dateTime date)")
+    }
+  }
+
+  test("mount table") {
+    new App {
+      val table = createTable("tweet", Seq(tweet()))
+      val mounted = consoleService.mountTable(table.name, table.path)
+      mounted.describeColumnsWithType should be(table.describeColumnsWithType)
+      consoleService.sql("select * from tweet").toDF.as[Tweet].toSeq should matchTo(Seq(tweet()))
     }
   }
 
