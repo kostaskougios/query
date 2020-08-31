@@ -12,6 +12,6 @@ object ConsoleApp extends App {
   val tables = Seq(
     mountTable("tweets", "/tmp/tweets")
   )
-  describe(tables)
+  describeShort(tables)
   //  sql("select * from tweets limit 5").show(false)
 }

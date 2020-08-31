@@ -23,6 +23,11 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
   def describe(tables: Seq[Table]) = out.println(
     tables.map(_.describe).mkString("\n")
   )
+
+  def describeShort(tables: Seq[Table]) = out.println(
+    tables.map(_.describeShort).mkString("\n")
+  )
+
 }
 
 trait ConsoleServiceBeans {

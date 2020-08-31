@@ -13,6 +13,8 @@ case class Table(
     format: String,
     columns: Seq[Column] = Nil
 ) {
+  def describeShort: String = s"$name($describeColumnsWithType)"
+
   def describe: String =
     s"""
        |Table   : ${name}
