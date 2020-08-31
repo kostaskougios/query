@@ -26,7 +26,15 @@ class ConsoleServiceTest extends AbstractSparkSuite {
       val table = createTable("tweet", Seq(tweet()))
       val mounted = consoleService.mountTable(table.name, table.path)
       mounted.describeColumnsWithType should be(table.describeColumnsWithType)
-      consoleService.sql("select * from tweet").toDF.as[Tweet].toSeq should matchTo(Seq(tweet()))
+      tableService.load(mounted).as[Tweet].toSeq should matchTo(Seq(tweet()))
+    }
+  }
+
+  test("sql") {
+    new App {
+      val table = createTable("tweet", Seq(tweet()))
+      consoleService.mountTable(table.name, table.path)
+      consoleService.sql("select * from tweet").as[Tweet].toSeq should matchTo(Seq(tweet()))
     }
   }
 

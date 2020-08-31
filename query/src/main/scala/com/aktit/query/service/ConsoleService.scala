@@ -9,6 +9,7 @@ import org.apache.spark.sql.{DataFrame, SparkSession}
   *         31/08/2020 - 00:30
   */
 class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) {
+
   def mountTable(
       name: String,
       path: String,
