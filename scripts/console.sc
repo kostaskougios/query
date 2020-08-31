@@ -1,17 +1,12 @@
 import java.io.File
 import $cp.^.out.query.assembly.dest.`out.jar`
-
-//val path = java.nio.file.FileSystems.getDefault.getPath(new File(".").getAbsolutePath+"/out/query/assembly/dest/out.jar")
-//val x = ammonite.ops.Path(path)
-//println(x)
-//interp.load.cp(x)
-//@
-
 import com.aktit.query.DI._
 import spark.implicits._
 
 try {
   import consoleService._
-  mountTable("tweets", "/tmp/tweets")
+  val tables = Seq(
+    mountTable("tweets", "/tmp/tweets")
+  )
   sql("select * from tweets limit 5").show(false)
 } finally destroy()
