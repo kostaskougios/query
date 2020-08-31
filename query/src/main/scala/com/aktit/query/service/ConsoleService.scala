@@ -5,7 +5,7 @@ import com.aktit.query.model.Table
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.jline.reader.impl.DefaultParser
 import org.jline.reader.impl.completer.StringsCompleter
-import org.jline.reader.{LineReader, LineReaderBuilder}
+import org.jline.reader.{EndOfFileException, LineReader, LineReaderBuilder}
 import org.jline.terminal.TerminalBuilder
 
 import scala.annotation.tailrec
@@ -47,7 +47,10 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
       .parser(p)
       .build
 
-    terminalLoop(reader, tables)
+    try terminalLoop(reader, tables)
+    catch {
+      case _: EndOfFileException =>
+    }
   }
 
   @tailrec
