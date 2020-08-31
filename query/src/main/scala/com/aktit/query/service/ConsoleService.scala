@@ -37,5 +37,5 @@ trait ConsoleServiceBeans {
 
   def tableService: TableService
 
-  val consoleService = new ConsoleService(out, spark, tableService)
+  lazy val consoleService = new ConsoleService(out, spark, tableService)
 }

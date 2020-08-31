@@ -10,7 +10,7 @@ import org.apache.spark.sql.SparkSession
   *         30/08/2020 - 21:27
   */
 trait SparkBeans {
-  val spark: SparkSession = {
+  lazy val spark: SparkSession = {
     val tmpDir = FileUtils.getTempDirectoryPath + "/query/" + UUID.randomUUID
     SparkSession.builder
       .master("local[*]")

@@ -1,7 +1,7 @@
 package com.aktit.query.model
 
-import org.apache.spark.sql.Column
 import org.apache.spark.sql.catalyst.expressions.AttributeReference
+import org.apache.spark.sql.{Column, DataFrame}
 
 /**
   * @author kostas.kougios
@@ -13,6 +13,8 @@ case class Table(
     format: String,
     columns: Seq[Column] = Nil
 ) {
+  def withDataFrame(df: DataFrame): Table = copy(columns = df.columns.map(df.col))
+
   def describeShort: String = s"$name($describeColumnsWithType)"
 
   def describe: String =
@@ -27,7 +29,7 @@ case class Table(
       .map(_.expr)
       .map {
         case a: AttributeReference =>
-          s"${a.name} ${a.dataType.sql}"
+          s"${a.name} ${a.dataType.sql.toLowerCase}"
       }
       .mkString(", ")
 }
