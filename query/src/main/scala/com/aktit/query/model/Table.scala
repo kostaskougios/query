@@ -32,4 +32,9 @@ case class Table(
           s"${a.name} ${a.dataType.sql.toLowerCase}"
       }
       .mkString(", ")
+
+  def columnNames: Seq[String] = columns.map(_.expr).map {
+    case a: AttributeReference =>
+      a.name
+  }
 }

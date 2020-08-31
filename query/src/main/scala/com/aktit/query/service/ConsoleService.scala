@@ -9,6 +9,7 @@ import org.jline.reader.{EndOfFileException, LineReader, LineReaderBuilder}
 import org.jline.terminal.TerminalBuilder
 
 import scala.annotation.tailrec
+import scala.collection.JavaConverters.asJavaIterableConverter
 
 /**
   * @author kostas.kougios
@@ -38,8 +39,8 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
   def terminal(tables: Seq[Table]): Unit = {
     out.println("? or ?? for help")
     val t = TerminalBuilder.builder.build()
-    val c = new StringsCompleter("foo", "bar", "baz")
     val p = new DefaultParser
+    val c = autoComplete(tables)
     val reader = LineReaderBuilder
       .builder()
       .terminal(t)
@@ -51,6 +52,12 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
     catch {
       case _: EndOfFileException =>
     }
+  }
+
+  private def autoComplete(tables: Seq[Table]) = {
+    val tableAC = tables.map(_.name) ++ tables.flatMap(_.columnNames)
+    val keywords = Seq("select", "from", "group", "asc", "desc", "in", "show", "with", "msck", "explain", "describe", "analyze", "refresh", "limit")
+    new StringsCompleter((tableAC ++ keywords).asJava)
   }
 
   @tailrec
