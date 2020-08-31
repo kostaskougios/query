@@ -1,0 +1,10 @@
+rm -rf dist
+mill clean
+mill _.assembly
+mill query.dataGenerator
+
+mkdir -p dist/build/lib
+cp out/query/assembly/dest/out.jar dist/build/lib/
+cp  dist-folder/* dist/build
+
+

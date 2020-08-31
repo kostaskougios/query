@@ -14,6 +14,8 @@ object query extends Common {
     Seq(
       Rule.Append("META-INF/services/org.apache.hadoop.fs.FileSystem", separator = "\n") // all FileSystem files will be concatenated into single file
     ) ++ super.assemblyRules
+
+  def dataGenerator() = runMain("com.aktit.query.DataGenerator")
 }
 
 trait Common extends SbtModule with ScalafmtModule {
