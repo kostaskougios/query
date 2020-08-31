@@ -13,5 +13,5 @@ object ConsoleApp extends App {
     mountTable("tweets", "/tmp/tweets")
   )
   describeShort(tables)
-  //  sql("select * from tweets limit 5").show(false)
+  consoleService.terminal(tables)
 }

@@ -6,8 +6,14 @@ package com.aktit.query.console
   */
 trait Out {
   def println(s: String): Unit
+
+  def error(s: String): Unit
 }
 
 trait OutBeans {
-  val out: Out = (s: String) => System.out.println(s)
+  val out: Out = new Out {
+    override def println(s: String): Unit = System.out.println(s)
+
+    override def error(s: String): Unit = System.err.println(s)
+  }
 }
