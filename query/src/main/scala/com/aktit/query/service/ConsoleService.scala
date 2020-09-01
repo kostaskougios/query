@@ -20,10 +20,11 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
   def mountTable(
       name: String,
       path: String,
-      format: String = "parquet"
+      format: String = "parquet",
+      csvHeaders: Boolean = true
   ): Table = {
     out.println(s"Mounting $name from $path")
-    tableService.mount(Table(name, path, format))
+    tableService.mount(Table(name, path, format, csvHeaders))
   }
 
   def sql(q: String): DataFrame = spark.sql(q)

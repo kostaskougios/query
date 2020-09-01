@@ -11,6 +11,7 @@ case class Table(
     name: String,
     path: String,
     format: String,
+    csvHeaders: Boolean = true,
     columns: Seq[Column] = Nil
 ) {
   def withDataFrame(df: DataFrame): Table = copy(columns = df.columns.map(df.col))

@@ -19,7 +19,7 @@ class TableService(spark: SparkSession) {
     table.withDataFrame(df)
   }
 
-  def load(table: Table): DataFrame = spark.read.format(table.format).load(table.path)
+  def load(table: Table): DataFrame = spark.read.format(table.format).option("header", table.csvHeaders).load(table.path)
 
   def create[A <: Product: TypeTag](
       table: Table,
