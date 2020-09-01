@@ -5,11 +5,13 @@ import consoleService._
 // import this for avro support
 import $ivy.`org.apache.spark::spark-avro:3.0.0`
 
+val RootDir = "data"
+
 val tables = Seq(
-  mountTable("budget", "data/budget.csv", format = "csv"),
-  mountTable("tweets", "data/tweets"), // parquet by default
-  mountTable("tweets_avro", "data/tweets_avro", format = "avro"),
-  mountTable("users", "data/users"),
-  mountTable("users_avro", "data/users_avro", format = "avro")
+  mountTable("budget", s"$RootDir/budget.csv", format = "csv", csvHeaders = true),
+  mountTable("tweets", s"$RootDir/tweets"), // parquet by default
+  mountTable("tweets_avro", s"$RootDir/tweets_avro", format = "avro"),
+  mountTable("users", s"$RootDir/users"),
+  mountTable("users_avro", s"$RootDir/users_avro", format = "avro")
 )
 terminal(tables)
