@@ -23,6 +23,8 @@ object DataGenerator extends App {
     val users = for (i <- 1L to HowMany) yield User(s"user${i % 1000}", s"Username for ${i % 1000}")
     println("Storing")
     tableService.create(Table("tweets", "dist/query/data/tweets", "parquet"), tweets)
+    tableService.create(Table("tweets_avro", "dist/query/data/tweets_avro", "avro"), tweets)
     tableService.create(Table("users", "dist/query/data/users", "parquet"), users.distinct)
+    tableService.create(Table("users_avro", "dist/query/data/users_avro", "avro"), users.distinct)
   } finally destroy()
 }

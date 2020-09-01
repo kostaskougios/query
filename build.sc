@@ -6,13 +6,14 @@ import mill.scalalib._
 import mill.scalalib.scalafmt._
 
 object query extends Common {
-  override def ivyDeps = Agg(Spark.Core, Spark.Sql, Utils.Scopt, Utils.JLine, Utils.Logback)
+  override def ivyDeps = Agg(Spark.Core, Spark.Sql, Spark.Avro, Utils.Scopt, Utils.JLine, Utils.Logback)
 
   object test extends CommonTest
 
   override def assemblyRules =
     Seq(
-      Rule.Append("META-INF/services/org.apache.hadoop.fs.FileSystem", separator = "\n") // all FileSystem files will be concatenated into single file
+      Rule.Append("META-INF/services/org.apache.hadoop.fs.FileSystem", separator = "\n"),
+      Rule.Append("META-INF/services/org.apache.spark.sql.sources.DataSourceRegister", separator = "\n")
     ) ++ super.assemblyRules
 
   def dataGenerator() = runMain("com.aktit.query.DataGenerator")
@@ -57,6 +58,7 @@ object Dependencies {
     val Version = "3.0.0"
     val Core = ivy"org.apache.spark::spark-core:$Version" excludeName "slf4j-log4j12"
     val Sql = ivy"org.apache.spark::spark-sql:$Version" excludeName "slf4j-log4j12"
+    val Avro = ivy"org.apache.spark::spark-avro:$Version"
   }
 
   object Utils {

@@ -23,12 +23,11 @@ class TableService(spark: SparkSession) {
 
   def create[A <: Product: TypeTag](
       table: Table,
-      data: Seq[A],
-      format: String = "parquet"
+      data: Seq[A]
   ): Table = {
     implicit val encoder = Encoders.product[A]
     val df = data.toDF
-    df.write.mode(SaveMode.Overwrite).format(format).save(table.path)
+    df.write.mode(SaveMode.Overwrite).format(table.format).save(table.path)
     table.withDataFrame(df)
   }
 
