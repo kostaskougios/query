@@ -6,7 +6,7 @@ import mill.scalalib._
 import mill.scalalib.scalafmt._
 
 object query extends Common {
-  override def ivyDeps = Agg(Spark.Core, Spark.Sql, Spark.Avro, Utils.Scopt, Utils.JLine, Utils.Logback)
+  override def ivyDeps = Agg(Spark.Core, Spark.Sql, Utils.Scopt, Utils.JLine, Utils.Logback)
 
   object test extends CommonTest
 
@@ -15,8 +15,6 @@ object query extends Common {
       Rule.Append("META-INF/services/org.apache.hadoop.fs.FileSystem", separator = "\n"),
       Rule.Append("META-INF/services/org.apache.spark.sql.sources.DataSourceRegister", separator = "\n")
     ) ++ super.assemblyRules
-
-  def dataGenerator() = runMain("com.aktit.query.DataGenerator")
 }
 
 trait Common extends SbtModule with ScalafmtModule {
