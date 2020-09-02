@@ -14,7 +14,11 @@ import scala.reflect.runtime.universe.TypeTag
   */
 trait TestApp extends TableServiceBeans {
   private val o = new StringBuilder
-  lazy val out: Out = (s: String) => o.append(s).append('\n')
+  lazy val out = new Out {
+    override def println(s: String): Unit = o.append(s).append('\n')
+
+    override def error(s: String): Unit = o.append(s).append('\n')
+  }
   lazy val spark = AbstractSparkSuite.spark
 
   def printed = o.result().trim

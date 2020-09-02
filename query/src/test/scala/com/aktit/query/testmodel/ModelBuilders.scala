@@ -14,11 +14,13 @@ object ModelBuilders {
       name: String = "test",
       path: String = "/tmp/table",
       format: String = "parquet",
+      csvHeaders: Boolean = true,
       columns: Seq[Column] = Nil
   ) = Table(
     name,
     path,
     format,
+    csvHeaders,
     columns
   )
 
