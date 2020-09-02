@@ -1,10 +1,10 @@
 package com.aktit.query
 
-import com.aktit.query.AbstractSparkSuite.randomFolder
 import com.aktit.query.console.Out
 import com.aktit.query.model.Table
 import com.aktit.query.service.TableServiceBeans
 import com.aktit.query.testmodel.ModelBuilders.table
+import com.aktit.query.util.DirUtils.randomFolder
 
 import scala.reflect.runtime.universe.TypeTag
 

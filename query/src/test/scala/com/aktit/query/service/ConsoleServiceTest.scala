@@ -1,7 +1,8 @@
 package com.aktit.query.service
 
-import com.aktit.query.testmodel.ModelBuilders.tweet
+import com.aktit.query.testmodel.ModelBuilders.{table, tweet}
 import com.aktit.query.testmodel.Tweet
+import com.aktit.query.util.DirUtils.randomFolder
 import com.aktit.query.{AbstractSparkSuite, TestApp}
 import com.softwaremill.diffx.scalatest.DiffMatcher.matchTo
 
@@ -12,6 +13,28 @@ import com.softwaremill.diffx.scalatest.DiffMatcher.matchTo
 class ConsoleServiceTest extends AbstractSparkSuite {
 
   import spark.implicits._
+
+  test("scan avro") {
+    new App {
+      val data = Seq(tweet(id = 1, text = "row1"), tweet(id = 2, text = "row2"))
+      val table = createTable("tweet", data, format = "avro")
+      val dir = randomFolder
+      tableService.export(table, dir + "/tweet.avro")
+      consoleService.scan(dir, "test_")
+      consoleService.sql("select * from test_tweet").as[Tweet].toSet should matchTo(data.toSet)
+    }
+  }
+
+  test("scan csv") {
+    new App {
+      val data = Seq(tweet(id = 1, text = "row1"), tweet(id = 2, text = "row2"))
+      val table1 = tableService.create(table("tweet", randomFolder, format = "csv"), data)
+      val dir = randomFolder
+      tableService.export(table1, dir + "/tweet.csv")
+      consoleService.scan(dir, "test_")
+      consoleService.sql("select id from test_tweet").as[String].toSet should matchTo(data.map(_.id.toString).toSet)
+    }
+  }
 
   test("describeShort") {
     new App {

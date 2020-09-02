@@ -1,6 +1,9 @@
 package com.aktit.query.service
 
+import java.io.File
+
 import com.aktit.query.model.Table
+import com.aktit.query.util.DirUtils.randomFolder
 import org.apache.spark.sql.{DataFrame, Encoders, SaveMode, SparkSession}
 
 import scala.reflect.runtime.universe.TypeTag
@@ -26,11 +29,28 @@ class TableService(spark: SparkSession) {
       data: Seq[A]
   ): Table = {
     implicit val encoder = Encoders.product[A]
-    val df = data.toDF
-    df.write.mode(SaveMode.Overwrite).format(table.format).save(table.path)
+    val df = data.toDF.coalesce(1)
+    prepareToWrite(table, df).save(table.path)
     table.withDataFrame(df)
   }
 
+  def export(table: Table, targetFile: String): File = {
+    val target = randomFolder
+    prepareToWrite(table, load(table).coalesce(1)).save(target)
+    val parts = new File(target).listFiles.filter(_.getName.startsWith("part-"))
+    if (parts.length != 1) throw new IllegalStateException(s"1 part expected but got ${parts.mkString(", ")}")
+    val f = parts.head
+    val t = new File(targetFile)
+    t.getParentFile.mkdirs()
+    if (!f.renameTo(t)) throw new IllegalStateException(s"couldn't move $f to $targetFile")
+    t
+  }
+
+  private def prepareToWrite(table: Table, df: DataFrame) =
+    df.write
+      .mode(SaveMode.Overwrite)
+      .format(table.format)
+      .option("header", table.csvHeaders)
 }
 
 trait TableServiceBeans {

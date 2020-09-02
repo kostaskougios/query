@@ -1,7 +1,10 @@
 package com.aktit.query.service
 
+import java.io.File
+
 import com.aktit.query.console.Out
 import com.aktit.query.model.Table
+import org.apache.commons.lang3.StringUtils
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.jline.reader.impl.DefaultParser
 import org.jline.reader.impl.completer.StringsCompleter
@@ -16,6 +19,16 @@ import scala.collection.JavaConverters.asJavaIterableConverter
   *         31/08/2020 - 00:30
   */
 class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) {
+
+  def scan(dir: String, tableNamePrefix: String = "", csvHeaders: Boolean = true) = {
+    for (f <- new File(dir).listFiles) {
+      val tableName = tableNamePrefix + fileToTableName(f)
+      if (f.getName.endsWith(".avro")) mountTable(tableName, f.getAbsolutePath, format = "avro")
+      if (f.getName.endsWith(".csv")) mountTable(tableName, f.getAbsolutePath, format = "csv", csvHeaders = csvHeaders)
+    }
+  }
+
+  private def fileToTableName(f: File) = StringUtils.substringBeforeLast(f.getName.replaceAll(" ", "_").replaceAll("-", "_"), ".")
 
   def mountTable(
       name: String,

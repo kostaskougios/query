@@ -1,8 +1,6 @@
 package com.aktit.query
 
-import java.util.UUID
-
-import org.apache.commons.io.FileUtils
+import com.aktit.query.util.DirUtils.randomFolder
 import org.apache.spark.sql.{Dataset, SparkSession}
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
@@ -39,6 +37,4 @@ object AbstractSparkSuite {
       .config("spark.sql.warehouse.dir", tmpDir)
       .getOrCreate
   }
-
-  def randomFolder: String = FileUtils.getTempDirectoryPath + "/AbstractSparkSuite/" + UUID.randomUUID
 }
