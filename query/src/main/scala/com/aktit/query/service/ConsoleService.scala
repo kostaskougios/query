@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.jline.reader.impl.DefaultParser
 import org.jline.reader.impl.completer.StringsCompleter
+import org.jline.reader.impl.history.DefaultHistory
 import org.jline.reader.{EndOfFileException, LineReader, LineReaderBuilder}
 import org.jline.terminal.TerminalBuilder
 
@@ -55,16 +56,22 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
     val t = TerminalBuilder.builder.build()
     val p = new DefaultParser
     val c = autoComplete(tables)
+    val history = new DefaultHistory
     val reader = LineReaderBuilder
       .builder()
       .terminal(t)
       .completer(c)
       .parser(p)
+      .variable(LineReader.HISTORY_FILE, "query.history")
+      .variable(LineReader.HISTORY_FILE_SIZE, 2)
+      .history(history)
       .build
 
     try terminalLoop(reader, tables)
     catch {
       case _: EndOfFileException =>
+    } finally {
+      history.save()
     }
   }
 
