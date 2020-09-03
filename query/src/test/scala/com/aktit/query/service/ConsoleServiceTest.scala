@@ -14,6 +14,17 @@ class ConsoleServiceTest extends AbstractSparkSuite {
 
   import spark.implicits._
 
+  test("scan spark dir") {
+    new App {
+      val data = Seq(tweet(id = 1, text = "row1"), tweet(id = 2, text = "row2"))
+      val dir = randomFolder
+      val t = tableService.create(table("tweets", path = dir + "/tweets"), data)
+      val scanned = consoleService.scan(dir, "test_")
+      scanned.map(_.path) should matchTo(Seq(t.path))
+      consoleService.sql("select * from test_tweets").as[Tweet].toSet should matchTo(data.toSet)
+    }
+  }
+
   test("scan avro") {
     new App {
       val data = Seq(tweet(id = 1, text = "row1"), tweet(id = 2, text = "row2"))

@@ -21,12 +21,33 @@ import scala.collection.JavaConverters.asJavaIterableConverter
   */
 class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) {
 
-  def scan(dir: String, tableNamePrefix: String = "", csvHeaders: Boolean = true) = {
-    for (f <- new File(dir).listFiles) {
+  def scan(dir: String, tableNamePrefix: String = "", csvHeaders: Boolean = true): Seq[Table] = {
+    val scanned = for (f <- new File(dir).listFiles.toList) yield {
       val tableName = tableNamePrefix + fileToTableName(f)
-      if (f.getName.endsWith(".avro")) mountTable(tableName, f.getAbsolutePath, format = "avro")
-      if (f.getName.endsWith(".csv")) mountTable(tableName, f.getAbsolutePath, format = "csv", csvHeaders = csvHeaders)
+
+      val ext = StringUtils.substringAfterLast(f.getName, ".")
+      val format =
+        if (f.isFile && Formats(ext))
+          Some(ext)
+        else if (f.isDirectory) detectFormat(f)
+        else None
+
+      format match {
+        case Some(format) =>
+          Some(mountTable(tableName, f.getAbsolutePath, format = format, csvHeaders = csvHeaders))
+        case None =>
+          out.error(s"Can't detect format of ${f.getAbsolutePath}. These extensions/formats are supported :${Formats.mkString(", ")}")
+          None
+      }
     }
+    scanned.flatten
+  }
+
+  private val Formats = Set("parquet", "avro", "orc", "csv")
+
+  private def detectFormat(dir: File) = {
+    val formats = dir.listFiles.map(_.getName).map(n => StringUtils.substringAfterLast(n, ".")).filter(Formats.contains).toSet
+    if (formats.size == 1) formats.headOption else None
   }
 
   private def fileToTableName(f: File) = StringUtils.substringBeforeLast(f.getName.replaceAll(" ", "_").replaceAll("-", "_"), ".")
