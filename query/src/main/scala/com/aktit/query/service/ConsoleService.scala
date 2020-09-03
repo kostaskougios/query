@@ -34,7 +34,7 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
 
       format match {
         case Some(format) =>
-          Some(mountTable(tableName, f.getAbsolutePath, format = format, csvHeaders = csvHeaders))
+          Some(Table(tableName, f.getAbsolutePath, format, csvHeaders))
         case None =>
           out.error(s"Can't detect format of ${f.getAbsolutePath}. These extensions/formats are supported :${Formats.mkString(", ")}")
           None
@@ -52,14 +52,18 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
 
   private def fileToTableName(f: File) = StringUtils.substringBeforeLast(f.getName.replaceAll(" ", "_").replaceAll("-", "_"), ".")
 
-  def mountTable(
+  def table(
       name: String,
       path: String,
       format: String = "parquet",
       csvHeaders: Boolean = true
-  ): Table = {
-    out.println(s"Mounting $name from $path")
-    tableService.mount(Table(name, path, format, csvHeaders))
+  ) = Table(name, path, format, csvHeaders)
+
+  def mount(tables: Table*): Seq[Table] = mountAll(tables)
+
+  def mountAll(tables: Seq[Table]): Seq[Table] = tables.map { table =>
+    out.println(s"Mounting ${table.name} from ${table.path}")
+    tableService.mount(table)
   }
 
   def sql(q: String): DataFrame = spark.sql(q)

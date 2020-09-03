@@ -10,8 +10,9 @@ object ConsoleApp extends App {
   import consoleService._
 
   val tables = Seq(
-    mountTable("tweets", "/tmp/tweets")
+    table("tweets", "/tmp/tweets")
   )
+
   describeShort(tables)
-  consoleService.terminal(tables)
+  terminal(mountAll(tables))
 }

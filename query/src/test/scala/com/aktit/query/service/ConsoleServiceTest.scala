@@ -19,7 +19,7 @@ class ConsoleServiceTest extends AbstractSparkSuite {
       val data = Seq(tweet(id = 1, text = "row1"), tweet(id = 2, text = "row2"))
       val dir = randomFolder
       val t = tableService.create(table("tweets", path = dir + "/tweets"), data)
-      val scanned = consoleService.scan(dir, "test_")
+      val scanned = consoleService.mountAll(consoleService.scan(dir, "test_"))
       scanned.map(_.path) should matchTo(Seq(t.path))
       consoleService.sql("select * from test_tweets").as[Tweet].toSet should matchTo(data.toSet)
     }
@@ -31,7 +31,7 @@ class ConsoleServiceTest extends AbstractSparkSuite {
       val table = createTable("tweet", data, format = "avro")
       val dir = randomFolder
       tableService.export(table, dir + "/tweet.avro")
-      consoleService.scan(dir, "test_")
+      consoleService.mountAll(consoleService.scan(dir, "test_"))
       consoleService.sql("select * from test_tweet").as[Tweet].toSet should matchTo(data.toSet)
     }
   }
@@ -42,7 +42,7 @@ class ConsoleServiceTest extends AbstractSparkSuite {
       val table1 = tableService.create(table("tweet", randomFolder, format = "csv"), data)
       val dir = randomFolder
       tableService.export(table1, dir + "/tweet.csv")
-      consoleService.scan(dir, "test_")
+      consoleService.mountAll(consoleService.scan(dir, "test_"))
       consoleService.sql("select id from test_tweet").as[String].toSet should matchTo(data.map(_.id.toString).toSet)
     }
   }
@@ -58,7 +58,7 @@ class ConsoleServiceTest extends AbstractSparkSuite {
   test("mount table") {
     new App {
       val table = createTable("tweet", Seq(tweet()))
-      val mounted = consoleService.mountTable(table.name, table.path)
+      val mounted = consoleService.mount(consoleService.table(table.name, table.path)).head
       mounted.describeColumnsWithType should be(table.describeColumnsWithType)
       tableService.load(mounted).as[Tweet].toSeq should matchTo(Seq(tweet()))
     }
@@ -67,7 +67,7 @@ class ConsoleServiceTest extends AbstractSparkSuite {
   test("sql") {
     new App {
       val table = createTable("tweet", Seq(tweet()))
-      consoleService.mountTable(table.name, table.path)
+      consoleService.mount(consoleService.table(table.name, table.path))
       consoleService.sql("select * from tweet").as[Tweet].toSeq should matchTo(Seq(tweet()))
     }
   }
