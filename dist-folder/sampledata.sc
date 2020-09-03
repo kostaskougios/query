@@ -20,3 +20,7 @@ tableService.create(Table("tweets_avro", "data/tweets_avro", "avro"), tweets)
 tableService.create(Table("users", "data/users", "parquet"), users.distinct)
 tableService.create(Table("users_avro", "data/users_avro", "avro"), users.distinct)
 
+tableService.create(Table("tweets", "data-to-scan/tweets", "parquet"), tweets)
+tableService.create(Table("tweets_avro", "data-to-scan/tweets_avro", "avro"), tweets)
+tableService.create(Table("users", "data-to-scan/users", "parquet"), users.distinct)
+tableService.create(Table("users_avro", "data-to-scan/users_avro", "avro"), users.distinct)
