@@ -1,5 +1,5 @@
-# rm -rf dist
-# mill clean
+rm -rf dist
+mill clean
 mill _.assembly
 
 mkdir -p dist/query/lib
