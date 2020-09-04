@@ -9,10 +9,8 @@ object ConsoleApp extends App {
   import DI._
   import consoleService._
 
-  val tables = Seq(
-    table("tweets", "/tmp/tweets")
-  )
+  val tables = scan("dist/query/data")
 
-  describeShort(tables)
-  terminal(mountAll(tables))
+  mountAll(tables)
+  terminal(mountAll(tables), historyFile = "/tmp/query.history")
 }

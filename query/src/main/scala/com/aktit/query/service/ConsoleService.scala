@@ -3,6 +3,7 @@ package com.aktit.query.service
 import java.io.File
 
 import com.aktit.query.console.Out
+import com.aktit.query.console.Out.{Cyan, Normal}
 import com.aktit.query.model.Table
 import org.apache.commons.lang3.StringUtils
 import org.apache.spark.sql.{DataFrame, SparkSession}
@@ -76,8 +77,14 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
     tables.map(_.describeShort).mkString("\n")
   )
 
-  def terminal(tables: Seq[Table]): Unit = {
+  def terminal(
+      tables: Seq[Table],
+      historyFile: String = "query.history",
+      historySize: Int = 100
+  ): Unit = {
+    out.yellowColour()
     out.println("? or ?? for help")
+    out.normalColour()
     val t = TerminalBuilder.builder.build()
     val p = new DefaultParser
     val c = autoComplete(tables)
@@ -87,8 +94,8 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
       .terminal(t)
       .completer(c)
       .parser(p)
-      .variable(LineReader.HISTORY_FILE, "query.history")
-      .variable(LineReader.HISTORY_FILE_SIZE, 2)
+      .variable(LineReader.HISTORY_FILE, historyFile)
+      .variable(LineReader.HISTORY_FILE_SIZE, historySize)
       .history(history)
       .build
 
@@ -108,8 +115,9 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
 
   @tailrec
   private def terminalLoop(reader: LineReader, tables: Seq[Table]): Unit = {
-    val line = reader.readLine("> ").trim
+    val line = reader.readLine(s"$Cyan> $Normal").trim
     try {
+      out.cyanColour()
       line match {
         case "?"  => describeShort(tables)
         case "??" => describe(tables)
@@ -118,6 +126,8 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
       }
     } catch {
       case ex: Throwable => out.error(ex.getMessage)
+    } finally {
+      out.normalColour()
     }
     terminalLoop(reader, tables)
   }
