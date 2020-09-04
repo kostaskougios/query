@@ -1,9 +1,9 @@
 package com.aktit.query.service
 
-import java.io.File
+import java.io.{ByteArrayOutputStream, File, PrintStream}
 
+import ch.qos.logback.core.util.StatusPrinter
 import com.aktit.query.console.Out
-import com.aktit.query.console.Out.{Cyan, Normal}
 import com.aktit.query.model.Table
 import org.apache.commons.lang3.StringUtils
 import org.apache.spark.sql.{DataFrame, SparkSession}
@@ -21,7 +21,6 @@ import scala.collection.JavaConverters.asJavaIterableConverter
   *         31/08/2020 - 00:30
   */
 class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) {
-
   def scan(dir: String, tableNamePrefix: String = "", csvHeaders: Boolean = true): Seq[Table] = {
     val scanned = for (f <- new File(dir).listFiles.toList) yield {
       val tableName = tableNamePrefix + fileToTableName(f)
@@ -63,7 +62,7 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
   def mount(tables: Table*): Seq[Table] = mountAll(tables)
 
   def mountAll(tables: Seq[Table]): Seq[Table] = tables.map { table =>
-    out.println(s"Mounting ${table.name} from ${table.path}")
+    out.println(s"Mounting ${Console.GREEN}${table.name}${Console.RESET} from ${Console.MAGENTA}${table.path}${Console.RESET}")
     tableService.mount(table)
   }
 
@@ -91,8 +90,10 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
     val history = new DefaultHistory
     val reader = LineReaderBuilder
       .builder()
+      .appName("query")
       .terminal(t)
       .completer(c)
+      //      .highlighter()
       .parser(p)
       .variable(LineReader.HISTORY_FILE, historyFile)
       .variable(LineReader.HISTORY_FILE_SIZE, historySize)
@@ -115,12 +116,16 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
 
   @tailrec
   private def terminalLoop(reader: LineReader, tables: Seq[Table]): Unit = {
-    val line = reader.readLine(s"$Cyan> $Normal").trim
+    val line = reader.readLine(s"${Console.BOLD + Console.RED_B}>${Console.RESET} ").trim
     try {
       out.cyanColour()
       line match {
-        case "?"  => describeShort(tables)
-        case "??" => describe(tables)
+        case "?" =>
+          out.greenColour()
+          describeShort(tables)
+        case "??" =>
+          out.greenColour()
+          describe(tables)
         case q =>
           sql(q).show(1000000, false)
       }
@@ -130,6 +135,13 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
       out.normalColour()
     }
     terminalLoop(reader, tables)
+  }
+}
+
+object ConsoleService {
+  def initConsole(): Unit = {
+    // mute initial logback logging
+    StatusPrinter.setPrintStream(new PrintStream(new ByteArrayOutputStream))
   }
 }
 

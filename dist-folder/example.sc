@@ -1,12 +1,11 @@
-import $cp.lib.`out.jar`
-import com.aktit.query.DI._
-import consoleService._
+
 
 // import this for avro support
 import $ivy.`org.apache.spark::spark-avro:3.0.0`
 
 val RootDir = "data"
 val ScanRootDir = "data-to-scan"
+com.aktit.query.service.ConsoleService.initConsole()
 
 val tables = Seq(
   table("budget", s"$RootDir/budget.csv", format = "csv", csvHeaders = true), // mount a csv file which should have headers
