@@ -7,11 +7,12 @@ import com.aktit.query.console.Out
 import com.aktit.query.model.Table
 import org.apache.commons.lang3.StringUtils
 import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.jline.builtins.Options.HelpException
 import org.jline.reader.impl.DefaultParser
 import org.jline.reader.impl.completer.StringsCompleter
 import org.jline.reader.impl.history.DefaultHistory
 import org.jline.reader.{EndOfFileException, LineReader, LineReaderBuilder}
-import org.jline.terminal.TerminalBuilder
+import org.jline.terminal.{Terminal, TerminalBuilder}
 
 import scala.annotation.tailrec
 import scala.collection.JavaConverters.asJavaIterableConverter
@@ -100,7 +101,7 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
       .history(history)
       .build
 
-    try terminalLoop(reader, tables)
+    try terminalLoop(t, reader, tables)
     catch {
       case _: EndOfFileException =>
     } finally {
@@ -115,7 +116,7 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
   }
 
   @tailrec
-  private def terminalLoop(reader: LineReader, tables: Seq[Table]): Unit = {
+  private def terminalLoop(terminal: Terminal, reader: LineReader, tables: Seq[Table]): Unit = {
     val line = reader.readLine(s"${Console.BOLD + Console.RED_B}>${Console.RESET} ").trim
     try {
       out.cyanColour()
@@ -130,11 +131,12 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
           sql(q).show(1000000, false)
       }
     } catch {
-      case ex: Throwable => out.error(ex.getMessage)
+      case ex: Throwable =>
+        HelpException.highlight(ex.getMessage, HelpException.defaultStyle()).print(terminal)
     } finally {
       out.normalColour()
     }
-    terminalLoop(reader, tables)
+    terminalLoop(terminal, reader, tables)
   }
 }
 
