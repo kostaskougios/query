@@ -3,8 +3,9 @@ package com.aktit.query.service
 import java.io.{ByteArrayOutputStream, File, PrintStream}
 
 import ch.qos.logback.core.util.StatusPrinter
-import com.aktit.query.console.Out
+import com.aktit.query.console.{Out, SimpleHighlighter}
 import com.aktit.query.model.Table
+import com.aktit.query.sqlsyntax.SqlSyntax
 import org.apache.commons.lang3.StringUtils
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.jline.builtins.Options.HelpException
@@ -94,7 +95,7 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
       .appName("query")
       .terminal(t)
       .completer(c)
-      //      .highlighter()
+      .highlighter(new SimpleHighlighter)
       .parser(p)
       .variable(LineReader.HISTORY_FILE, historyFile)
       .variable(LineReader.HISTORY_FILE_SIZE, historySize)
@@ -111,8 +112,7 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
 
   private def autoComplete(tables: Seq[Table]) = {
     val tableAC = tables.map(_.name) ++ tables.flatMap(_.columnNames)
-    val keywords = Seq("select", "from", "group", "asc", "desc", "in", "show", "with", "msck", "explain", "describe", "analyze", "refresh", "limit")
-    new StringsCompleter((tableAC ++ keywords).asJava)
+    new StringsCompleter((tableAC ++ SqlSyntax.Keywords).asJava)
   }
 
   @tailrec
