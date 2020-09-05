@@ -95,7 +95,7 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
       .appName("query")
       .terminal(t)
       .completer(c)
-      .highlighter(new SimpleHighlighter)
+      .highlighter(new SimpleHighlighter(keywordsFromTables(tables).toSet))
       .parser(p)
       .variable(LineReader.HISTORY_FILE, historyFile)
       .variable(LineReader.HISTORY_FILE_SIZE, historySize)
@@ -111,8 +111,12 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
   }
 
   private def autoComplete(tables: Seq[Table]) = {
-    val tableAC = tables.map(_.name) ++ tables.flatMap(_.columnNames)
+    val tableAC = keywordsFromTables(tables)
     new StringsCompleter((tableAC ++ SqlSyntax.Keywords).asJava)
+  }
+
+  private def keywordsFromTables(tables: Seq[Table]) = {
+    tables.map(_.name) ++ tables.flatMap(_.columnNames)
   }
 
   @tailrec
