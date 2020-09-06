@@ -15,7 +15,7 @@ import scala.reflect.runtime.universe.TypeTag
 trait TestApp extends TableServiceBeans {
   private val o = new StringBuilder
   lazy val out = new Out {
-    override def println(s: String): Unit = o.append(s).append('\n')
+    override def print(s: String): Unit = o.append(s)
 
     override def error(s: String): Unit = o.append(s).append('\n')
   }

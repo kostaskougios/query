@@ -1,14 +1,12 @@
 package com.aktit.query.console
 
-import java.util.StringTokenizer
 import java.util.regex.Pattern
 
+import com.aktit.query.console.SimpleHighlighter.split
 import com.aktit.query.sqlsyntax.SqlSyntax
 import org.apache.commons.lang3.StringUtils
 import org.jline.reader.{Highlighter, LineReader}
 import org.jline.utils.{AttributedStringBuilder, AttributedStyle}
-
-import scala.collection.JavaConverters.enumerationAsScalaIteratorConverter
 
 /**
   * @author kostas.kougios
@@ -23,9 +21,7 @@ class SimpleHighlighter(keywordsFromTables: Set[String]) extends Highlighter {
 
   override def highlight(reader: LineReader, buffer: String) = {
     val builder = new AttributedStringBuilder
-    val tokenizer = new StringTokenizer(buffer, " ", true)
-    val tokens = tokenizer.asScala.map(_.asInstanceOf[String])
-    for (text <- tokens) {
+    for (text <- split(buffer)) {
       val t = text.toLowerCase
       if (keywords(t)) {
         builder.style(KeywordStyle)
@@ -46,5 +42,21 @@ class SimpleHighlighter(keywordsFromTables: Set[String]) extends Highlighter {
 
   override def setErrorIndex(errorIndex: Int) = {
     println(errorIndex)
+  }
+}
+
+object SimpleHighlighter {
+  private val NonSplittable = (('a' to 'z') ++ ('A' to 'Z') ++ ('0' to '9')).toSet + '_'
+
+  def split(s: String): Seq[String] = {
+    s.foldLeft(List(List.empty[Char])) { (l, c) =>
+        if (l.head.nonEmpty && !NonSplittable(l.head.head))
+          List(c) :: l
+        else if (NonSplittable(c))
+          (c :: l.head) :: l.tail
+        else List(c) :: l
+      }
+      .reverse
+      .map(_.reverse.mkString(""))
   }
 }
