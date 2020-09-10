@@ -84,7 +84,7 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
       historySize: Int = 100
   ): Unit = {
     out.yellowColour()
-    out.println("? or ?? for help")
+    out.println("? or ?select or ?? for help")
     out.normalColour()
     val t = TerminalBuilder.builder.build()
     val p = new DefaultParser
@@ -132,6 +132,8 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
           out.greenColour()
           describe(tables)
         case "" =>
+        case "?select" =>
+          tables.map(_.toSelect).foreach(out.println)
         case q =>
           sql(q).show(1000000, false)
       }
@@ -143,6 +145,7 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
     }
     terminalLoop(terminal, reader, tables)
   }
+
 }
 
 object ConsoleService {

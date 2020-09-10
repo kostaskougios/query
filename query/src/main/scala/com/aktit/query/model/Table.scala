@@ -38,4 +38,6 @@ case class Table(
     case a: AttributeReference =>
       a.name
   }
+
+  def toSelect: String = s"${Console.GREEN}select ${columnNames.map(n => s"${Console.MAGENTA}$n").mkString(s"${Console.RESET}, ")} ${Console.GREEN}from ${Console.MAGENTA}$name${Console.RESET}"
 }

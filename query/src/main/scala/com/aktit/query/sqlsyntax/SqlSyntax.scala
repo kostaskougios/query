@@ -27,6 +27,7 @@ object SqlSyntax {
     "limit",
     "create",
     "table",
-    "tables"
+    "tables",
+    "?select"
   )
 }
