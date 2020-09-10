@@ -16,7 +16,7 @@ case class Table(
 ) {
   def withDataFrame(df: DataFrame): Table = copy(columns = df.columns.map(df.col))
 
-  def describeShort: String = s"$name($describeColumnsWithType)"
+  def describeShort: String = s"${Console.MAGENTA}${Console.UNDERLINED}$name${Console.RESET}${Console.CYAN}($describeColumnsWithType${Console.CYAN})${Console.RESET}"
 
   def describe: String =
     s"""
@@ -30,9 +30,9 @@ case class Table(
       .map(_.expr)
       .map {
         case a: AttributeReference =>
-          s"${a.name} ${a.dataType.sql.toLowerCase}"
+          s"${Console.MAGENTA}${a.name} ${Console.YELLOW}${a.dataType.sql.toLowerCase}"
       }
-      .mkString(", ")
+      .mkString(s"${Console.RESET}, ")
 
   def columnNames: Seq[String] = columns.map(_.expr).map {
     case a: AttributeReference =>

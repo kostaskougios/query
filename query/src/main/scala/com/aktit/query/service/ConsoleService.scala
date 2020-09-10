@@ -131,6 +131,7 @@ class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) 
         case "??" =>
           out.greenColour()
           describe(tables)
+        case "" =>
         case q =>
           sql(q).show(1000000, false)
       }
