@@ -1,0 +1,13 @@
+mkdir tmp
+mkdir bin/tools
+
+curl -L https://download.java.net/openjdk/jdk11/ri/openjdk-11+28_linux-x64_bin.tar.gz >/tmp/jdk.tar.gz
+tar -xzf tmp/jdk.tar.gz
+mv jdk-11 bin/tools/jdk
+
+curl -L https://github.com/lihaoyi/Ammonite/releases/download/2.2.0/2.12-2.2.0 >bin/tools/amm
+chmod +x bin/tools/amm
+
+rm -rf tmp
+
+bin/amm sampledata.sc
