@@ -1,3 +1,10 @@
+# Query
+Query is a tool to view big data files (avro, parquet, orc, csv and all spark supported formats) as a database and query
+them from an interactive console or scala ammonite scripts. It supports syntax colouring and basic autocomplete. 
+
+![example 1](etc/img/ss1.png)
+![example 1](etc/img/ss2.png)
+
 # Install on linux 64 bit
 
 This will create a self-contained folder with the jdk, ammonite and the query tool. 
