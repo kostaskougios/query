@@ -1,6 +1,20 @@
-# Download
+# Install on linux 64 bit
 
-- Install ammonite for scala 2.12 from https://ammonite.io/#OlderScalaVersions
+This will create a self-contained folder with the jdk, ammonite and the query tool. 
+
+- download and unzip https://drive.google.com/uc?id=14ORaIU1mW-CbLSwySY7SNEuzMhir3FcK&export=download (open with browser)
+
+```
+cd UNZIPPED_FOLDER
+bin/install
+
+# now ready to run scripts
+bin/amm example.sc
+```
+
+# Install on other platforms
+
+- Install jdk 8 or 11 and ammonite for scala 2.12 from https://ammonite.io/#OlderScalaVersions
 - download and unzip https://drive.google.com/file/d/14ORaIU1mW-CbLSwySY7SNEuzMhir3FcK/view?usp=sharing (open with browser). Follow the instructions of the Readme file inside the zip file.
 
 Known issues: 
