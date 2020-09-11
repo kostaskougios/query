@@ -1,6 +1,8 @@
 # Query
 Query is a tool to view big data files (avro, parquet, orc, csv and all spark supported formats) as a database and query
-them from an interactive console or scala ammonite scripts. It supports syntax colouring and basic autocomplete. 
+them from an interactive console or scala ammonite scripts. It supports syntax colouring and basic autocomplete.
+A single csv or avro file or spark-generated directories with parquet, orc, csv, avro data are supported. In fact the tool
+was written over spark 3.  
 
 ![example 1](etc/img/ss1.png)
 ![example 1](etc/img/ss2.png)
@@ -26,7 +28,7 @@ bin/amm example.sc
 
 Known issues: 
 - Autocomplete is basic, only table names and some sql keywords will be completed, also when pressing <tab> make sure to have a standalone
-word (spaced from parenthesis, dots etc)
+word (spaced from parenthesis, dots etc). Basic but very useful!
 
 # Build from source
 
