@@ -24,7 +24,7 @@ import scala.collection.JavaConverters.asJavaIterableConverter
   */
 class ConsoleService(out: Out, spark: SparkSession, tableService: TableService) {
   def scan(dir: String, tableNamePrefix: String = "", csvHeaders: Boolean = true): Seq[Table] = {
-    val scanned = for (f <- new File(dir).listFiles.toList) yield {
+    val scanned = for (f <- Option(new File(dir).listFiles).map(_.toList).getOrElse(Nil)) yield {
       val tableName = tableNamePrefix + fileToTableName(f)
 
       val ext = StringUtils.substringAfterLast(f.getName, ".")
