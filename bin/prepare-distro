@@ -1,4 +1,4 @@
-rm -rf dist
+#rm -rf dist
 #mill clean
 mill _.assembly
 
@@ -8,4 +8,4 @@ cp out/query/assembly/dest/out.jar dist/query/lib/
 cp  -r dist-folder/* dist/query
 
 cd dist
-zip -r query.zip query
+#zip -r query.zip query
