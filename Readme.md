@@ -1,7 +1,7 @@
 # Query
-Query is a tool to view big data files (avro, parquet, orc, csv and all spark supported formats) as a database and query
+Query is a tool to view big data files (avro, parquet, orc, csv, json and all spark supported formats) as a database and query
 them from an interactive console or scala ammonite scripts. It supports syntax colouring and basic autocomplete.
-A single csv or avro file or spark-generated directories with parquet, orc, csv, avro data are supported. The tool
+A single csv, json or avro file or spark-generated directories with parquet, orc, csv, avro data are supported. The tool
 is written over spark sql 3 and supports the formats that spark supports and also autodetects the columns of the
 tables.
 
@@ -25,14 +25,14 @@ bin/install
 bin/amm example.sc
 ```
 
-# Install on other platforms
+# Install on all platforms
 
 - Install jdk 8 or 11 and ammonite for scala 2.12 from https://ammonite.io/#OlderScalaVersions
 - download and unzip https://drive.google.com/file/d/14ORaIU1mW-CbLSwySY7SNEuzMhir3FcK/view?usp=sharing (open with browser). Follow the instructions of the Readme file inside the zip file.
 
 Known issues: 
-- Autocomplete is basic, only table names and some sql keywords will be completed, also when pressing <tab> make sure to have a standalone
-word (spaced from parenthesis, dots etc). Basic but very useful!
+- Autocomplete is not context-aware, only table names and some sql keywords will be completed, also when pressing <tab> make sure to have a standalone
+word (spaced from parenthesis, dots etc). it is though very useful!
 
 # Build from source
 
