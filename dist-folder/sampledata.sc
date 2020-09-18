@@ -6,9 +6,10 @@ import $ivy.`org.apache.spark::spark-avro:3.0.0`
 
 val HowMany = 10000L
 
-
+// Tweet table via this case class
 case class Tweet(id: Long, by: String, text: String, dateTime: LocalDate)
 
+// User table via this case class
 case class User(id: String, name: String)
 
 println(s"Creating $HowMany rows")
