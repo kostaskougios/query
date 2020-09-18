@@ -1,3 +1,8 @@
+/**
+ * Ammonite scala script, install ammonite for scala 2.12 and
+ * run with `amm example.sc`
+ */
+
 import $cp.lib.`out.jar`
 import com.aktit.query.DI._
 import consoleService._
