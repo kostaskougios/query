@@ -28,7 +28,7 @@ bin/amm example.sc
 # Install on all platforms
 
 - Install jdk 8 or 11 and ammonite for scala 2.12 from https://ammonite.io/#OlderScalaVersions
-- download and unzip https://drive.google.com/file/d/14ORaIU1mW-CbLSwySY7SNEuzMhir3FcK/view?usp=sharing (open with browser). Follow the instructions of the Readme file inside the zip file.
+- download and unzip https://drive.google.com/file/d/1IfIG3jmgAcv7DINpouGXP6Lk2VfckKHK/view?usp=sharing (open with browser). Follow the instructions of the Readme file inside the zip file.
 
 Known issues: 
 - Autocomplete is not context-aware, only table names and some sql keywords will be completed, also when pressing <tab> make sure to have a standalone
