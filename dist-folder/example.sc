@@ -3,12 +3,8 @@
  * run with `amm example.sc`
  */
 
-import $cp.lib.`out.jar`
-import com.aktit.query.DI._
-import consoleService._
-
 // import this for avro support
-import $ivy.`org.apache.spark::spark-avro:3.0.0`
+import $ivy.`org.apache.spark::spark-avro:3.2.1`
 
 val RootDir = "data"
 val ScanRootDir = "data-to-scan"

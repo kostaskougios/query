@@ -39,7 +39,7 @@ trait Common extends SbtModule with ScalafmtModule {
 object Dependencies {
 
   object Scala {
-    val Version = "2.12.12"
+    val Version = "2.13.8"
   }
 
   object Test {
@@ -53,7 +53,7 @@ object Dependencies {
   }
 
   object Spark {
-    val Version = "3.0.0"
+    val Version = "3.2.1"
     val Core = ivy"org.apache.spark::spark-core:$Version" excludeName "slf4j-log4j12"
     val Sql = ivy"org.apache.spark::spark-sql:$Version" excludeName "slf4j-log4j12"
     val Avro = ivy"org.apache.spark::spark-avro:$Version"

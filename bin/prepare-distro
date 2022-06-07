@@ -4,7 +4,7 @@ mill _.assembly
 
 mkdir -p dist/query/lib
 
-cp out/query/assembly/dest/out.jar dist/query/lib/
+cp out/query/assembly.dest/out.jar dist/query/lib/
 cp  -r dist-folder/* dist/query
 
 cd dist
