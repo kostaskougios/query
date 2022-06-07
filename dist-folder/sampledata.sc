@@ -3,6 +3,10 @@
  * run with `amm sampledata.sc`
  */
 
+import $cp.lib.`out.jar`
+import com.aktit.query.DI._
+import java.time.LocalDate
+import com.aktit.query.model.Table
 import $ivy.`org.apache.spark::spark-avro:3.2.1`
 
 import java.time.LocalDate
