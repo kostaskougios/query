@@ -1,7 +1,7 @@
 run:
 ```shell
 # create sample tables with data into data folder
-./sampledata.sc
+./generate-sample-data.sc
 # start a repl to query the tweet sample data only
 ./tweets.sc
 ```

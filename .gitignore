@@ -22,3 +22,8 @@ examples/data/tweets
 examples/data/tweets_avro
 examples/data/users
 examples/data/users_avro
+
+examples/data-to-scan/tweets
+examples/data-to-scan/tweets_avro
+examples/data-to-scan/users
+examples/data-to-scan/users_avro
