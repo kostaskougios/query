@@ -9,6 +9,10 @@ import org.apache.commons.io.FileUtils
   *         02/09/2020 - 23:41
   */
 object DirUtils {
-  def randomFolder: String = FileUtils.getTempDirectoryPath + "/AbstractSparkSuite/" + UUID.randomUUID
+  def randomFolder: String = {
+    val t = FileUtils.getTempDirectoryPath
+    val slash = if (t.endsWith("/")) "" else "/"
+    t + slash + "AbstractSparkSuite/" + UUID.randomUUID
+  }
 
 }

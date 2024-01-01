@@ -14,7 +14,7 @@ case class Table(
     csvHeaders: Boolean = true,
     columns: Seq[Column] = Nil
 ) {
-  def withDataFrame(df: DataFrame): Table = copy(columns = df.columns.map(df.col))
+  def withDataFrame(df: DataFrame): Table = copy(columns = df.columns.toIndexedSeq.map(df.col))
 
   def describeShort: String = s"${Console.MAGENTA}${Console.UNDERLINED}$name${Console.RESET}${Console.CYAN}($describeColumnsWithType${Console.CYAN})${Console.RESET}"
 

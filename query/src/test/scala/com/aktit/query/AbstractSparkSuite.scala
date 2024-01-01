@@ -17,9 +17,9 @@ abstract class AbstractSparkSuite extends AnyFunSuite with Matchers {
   protected val spark = AbstractSparkSuite.spark
 
   implicit class DatasetImplicits[A](ds: Dataset[A]) {
-    def toSeq = ds.collect.toSeq
+    def toSeq = ds.collect().toSeq
 
-    def toSet = ds.collect.toSet
+    def toSet = ds.collect().toSet
   }
 
 }
@@ -29,12 +29,13 @@ object AbstractSparkSuite {
   val spark = {
     val tmpDir = randomFolder
     LoggerFactory.getLogger(getClass).info(s"Testing tmp dir is $tmpDir")
-    SparkSession.builder
+    SparkSession
+      .builder()
       .master("local[*]")
       .appName("testing")
       .config("spark.ui.enabled", false)
       .config("spark.sql.shuffle.partitions", 4)
       .config("spark.sql.warehouse.dir", tmpDir)
-      .getOrCreate
+      .getOrCreate()
   }
 }

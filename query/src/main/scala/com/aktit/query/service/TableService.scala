@@ -29,12 +29,12 @@ class TableService(spark: SparkSession) {
       data: Seq[A]
   ): Table = {
     implicit val encoder = Encoders.product[A]
-    val df = data.toDF.coalesce(1)
+    val df = data.toDF().coalesce(1)
     prepareToWrite(table, df).save(table.path)
     table.withDataFrame(df)
   }
 
-  def export(table: Table, targetFile: String): File = {
+  def exportToFile(table: Table, targetFile: String): File = {
     val target = randomFolder
     prepareToWrite(table, load(table).coalesce(1)).save(target)
     val parts = new File(target).listFiles.filter(_.getName.startsWith("part-"))

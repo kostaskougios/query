@@ -12,13 +12,14 @@ import org.apache.spark.sql.SparkSession
 trait SparkBeans {
   lazy val spark: SparkSession = {
     val tmpDir = FileUtils.getTempDirectoryPath + "/query/" + UUID.randomUUID
-    SparkSession.builder
+    SparkSession
+      .builder()
       .master("local[*]")
       .appName("query")
       .config("spark.ui.enabled", false)
       .config("spark.sql.shuffle.partitions", 4)
       .config("spark.sql.warehouse.dir", tmpDir)
-      .getOrCreate
+      .getOrCreate()
   }
 
   def destroy(): Unit = spark.close()

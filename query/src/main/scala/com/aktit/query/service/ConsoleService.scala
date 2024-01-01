@@ -16,7 +16,7 @@ import org.jline.reader.{EndOfFileException, LineReader, LineReaderBuilder}
 import org.jline.terminal.{Terminal, TerminalBuilder}
 
 import scala.annotation.tailrec
-import scala.collection.JavaConverters.asJavaIterableConverter
+import scala.jdk.CollectionConverters._
 
 /**
   * @author kostas.kougios
