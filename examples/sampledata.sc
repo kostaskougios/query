@@ -1,4 +1,4 @@
-#!/ usr / bin / env -S scala -cli.
+#!/usr/bin/env -S scala-cli  .
 
 import com.aktit.query.DI._
 import java.time.LocalDate
