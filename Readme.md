@@ -8,6 +8,8 @@ tables.
 Local files/directories can be mounted as well as any spark supported path (i.e. `s3n` though not tested yet). This means
 that the command can be run on a developers box but access data on any path that spark recognizes.
 
+Note: feel free to ask questions in the "Discussions" board at the top of the github page.
+
 # Installation
 
 `scala-cli` is the only requirement to use `query`. The recommended way is to checkout this repository and start modifying the
