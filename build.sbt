@@ -22,7 +22,7 @@ val SparkAvro = "org.apache.spark" %% "spark-avro" % SparkVersion
 val Enum = "com.beachape" %% "enumeratum" % "1.7.2"
 val Scopt = "com.github.scopt" %% "scopt" % "4.1.0"
 val JLine = "org.jline" % "jline" % "3.16.0"
-val Logback = "ch.qos.logback" % "logback-classic" % "1.2.3"
+val LogBack = "ch.qos.logback" % "logback-classic" % "1.4.14"
 
 // -----------------------------------------------------------------------------------------------
 // Modules
@@ -40,7 +40,7 @@ lazy val query = project
       SparkAvro,
       Scopt,
       JLine,
-      Logback,
+      LogBack,
       ScalaTest,
       ScalaMock,
       Diffx

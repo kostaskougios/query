@@ -1,10 +1,9 @@
-#!/usr/bin/env -S scala-cli  .
+#!/usr/bin/env -S scala-cli --java-opt -Dlogback.configurationFile=file:logback.xml .
 
 import com.aktit.query.DI._
 import consoleService._
 
 val RootDir = "data"
-val ScanRootDir = "data-to-scan"
 com.aktit.query.service.ConsoleService.initConsole()
 
 val tables = Seq(
