@@ -1,13 +1,9 @@
-Please install ammonite for scala 2.12 from :
-
-https://ammonite.io/#OlderScalaVersions
-
-then as an example run:
+run:
 
 # create sample tables into data folder
-amm sampledata.sc
+./sampledata.sc
 # start a repl to query the sample data
-amm example.sc
+./example.sc
 
 In the repl type ? for help or a query like:
 select * from tweets limit 5

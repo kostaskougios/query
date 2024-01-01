@@ -16,3 +16,9 @@ RUNNING_PID
 out
 src_generated
 query.history
+.bsp
+.scala-build
+examples/data/tweets
+examples/data/tweets_avro
+examples/data/users
+examples/data/users_avro

@@ -1,13 +1,7 @@
-/**
- * Ammonite scala script, install ammonite for scala 2.12 and
- * run with `amm example.sc`
- */
+#!/ usr / bin / env -S scala -cli.
 
-import $cp.lib.`out.jar`
 import com.aktit.query.DI._
 import consoleService._
-// import this for avro support
-import $ivy.`org.apache.spark::spark-avro:3.2.1`
 
 val RootDir = "data"
 val ScanRootDir = "data-to-scan"

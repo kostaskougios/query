@@ -5,8 +5,8 @@ A single csv, json or avro file or spark-generated directories with parquet, orc
 is written over spark sql 3 and supports the formats that spark supports and also autodetects the columns of the
 tables.
 
-An example scala ammonite script of how to mount different formats can be found [here](dist-folder/example.sc).
-Table creation is also supported, see an [example script](dist-folder/sampledata.sc).
+An example scala ammonite script of how to mount different formats can be found [here](examples/example.sc).
+Table creation is also supported, see an [example script](examples/sampledata.sc).
 
 ![example 1](etc/img/ss1.png)
 ![example 1](etc/img/ss2.png)
