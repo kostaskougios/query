@@ -1,12 +1,12 @@
 package com.aktit.query.service
 
-import com.aktit.query.console.ColorUtils
 import com.aktit.query.console.ColorUtils.removeColor
 import com.aktit.query.testmodel.ModelBuilders.{table, tweet}
 import com.aktit.query.testmodel.Tweet
 import com.aktit.query.util.DirUtils.randomFolder
 import com.aktit.query.{AbstractSparkSuite, TestApp}
-import com.softwaremill.diffx.scalatest.DiffMatcher.matchTo
+import com.softwaremill.diffx.scalatest.DiffShouldMatcher._
+import com.softwaremill.diffx.generic.auto._
 
 /**
   * @author kostas.kougios
@@ -22,8 +22,8 @@ class ConsoleServiceTest extends AbstractSparkSuite {
       val dir = randomFolder
       val t = tableService.create(table("tweets", path = dir + "/tweets"), data)
       val scanned = consoleService.mountAll(consoleService.scan(dir, "test_"))
-      scanned.map(_.path) should matchTo(Seq(t.path))
-      consoleService.sql("select * from test_tweets").as[Tweet].toSet should matchTo(data.toSet)
+      scanned.map(_.path) shouldMatchTo (Seq(t.path))
+      consoleService.sql("select * from test_tweets").as[Tweet].toSet shouldMatchTo (data.toSet)
     }
   }
 
@@ -34,7 +34,7 @@ class ConsoleServiceTest extends AbstractSparkSuite {
       val dir = randomFolder
       tableService.exportToFile(table, dir + "/tweet.avro")
       consoleService.mountAll(consoleService.scan(dir, "test_"))
-      consoleService.sql("select * from test_tweet").as[Tweet].toSet should matchTo(data.toSet)
+      consoleService.sql("select * from test_tweet").as[Tweet].toSet shouldMatchTo (data.toSet)
     }
   }
 
@@ -45,7 +45,7 @@ class ConsoleServiceTest extends AbstractSparkSuite {
       val dir = randomFolder
       tableService.exportToFile(table1, dir + "/tweet.csv")
       consoleService.mountAll(consoleService.scan(dir, "test_"))
-      consoleService.sql("select id from test_tweet").as[String].toSet should matchTo(data.map(_.id.toString).toSet)
+      consoleService.sql("select id from test_tweet").as[String].toSet shouldMatchTo (data.map(_.id.toString).toSet)
     }
   }
 
@@ -63,7 +63,7 @@ class ConsoleServiceTest extends AbstractSparkSuite {
       val table = createTable("tweet", Seq(tweet()))
       val mounted = consoleService.mount(consoleService.table(table.name, table.path)).head
       mounted.describeColumnsWithType should be(table.describeColumnsWithType)
-      tableService.load(mounted).as[Tweet].toSeq should matchTo(Seq(tweet()))
+      tableService.load(mounted).as[Tweet].toSeq shouldMatchTo (Seq(tweet()))
     }
   }
 
@@ -71,7 +71,7 @@ class ConsoleServiceTest extends AbstractSparkSuite {
     new App {
       val table = createTable("tweet", Seq(tweet()))
       consoleService.mount(consoleService.table(table.name, table.path))
-      consoleService.sql("select * from tweet").as[Tweet].toSeq should matchTo(Seq(tweet()))
+      consoleService.sql("select * from tweet").as[Tweet].toSeq shouldMatchTo (Seq(tweet()))
     }
   }
 

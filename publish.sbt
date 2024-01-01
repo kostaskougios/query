@@ -1,18 +1,20 @@
-ThisBuild / publishMavenStyle      := true
+ThisBuild / publishMavenStyle := true
 ThisBuild / Test / publishArtifact := false
-ThisBuild / pomIncludeRepository   := { _ => false }
-ThisBuild / licenses               := Seq("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0"))
-ThisBuild / homepage               := Some(url("https://github.com/kostaskougios/CHANGEME"))
-ThisBuild / scmInfo                := Some(
+ThisBuild / pomIncludeRepository := { _ =>
+  false
+}
+ThisBuild / licenses := Seq("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0"))
+ThisBuild / homepage := Some(url("https://github.com/kostaskougios/CHANGEME"))
+ThisBuild / scmInfo := Some(
   ScmInfo(
-    url("https://github.com/kostaskougios/CHANGEME"),
-    "scm:https://github.com/kostaskougios/CHANGEME.git"
+    url("https://github.com/kostaskougios/query"),
+    "scm:https://github.com/kostaskougios/query.git"
   )
 )
-ThisBuild / developers             := List(
+ThisBuild / developers := List(
   Developer(id = "kostaskougios", name = "Kostas Kougios", email = "kostas.kougios@googlemail.com", url = url("https://github.com/kostaskougios"))
 )
-ThisBuild / versionScheme          := Some("early-semver")
+ThisBuild / versionScheme := Some("early-semver")
 
 ThisBuild / publishTo := {
   val nexus = "https://s01.oss.sonatype.org/"
@@ -21,6 +23,6 @@ ThisBuild / publishTo := {
 }
 
 // disable publishing the root
-publish         := {}
-publishLocal    := {}
+publish := {}
+publishLocal := {}
 publishArtifact := false
