@@ -1,4 +1,5 @@
 #!/ usr / bin / env -S scala -cli.
+
 import com.aktit.query.DI._
 import java.time.LocalDate
 import com.aktit.query.model.Table

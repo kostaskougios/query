@@ -15,8 +15,8 @@ val ScalaMock = "org.scalamock" %% "scalamock" % "5.2.0" % Test
 val Diffx = "com.softwaremill.diffx" %% "diffx-scalatest-should" % "0.9.0" % Test
 
 val SparkVersion = "3.5.0"
-val SparkCore = "org.apache.spark" %% "spark-core" % SparkVersion // .exclude ("slf4j-log4j12")
-val SparkSql = "org.apache.spark" %% "spark-sql" % SparkVersion // excludeName "slf4j-log4j12"
+val SparkCore = ("org.apache.spark" %% "spark-core" % SparkVersion).exclude("org.slf4j", "slf4j-log4j12")
+val SparkSql = ("org.apache.spark" %% "spark-sql" % SparkVersion).exclude("org.slf4j", "slf4j-log4j12")
 val SparkAvro = "org.apache.spark" %% "spark-avro" % SparkVersion
 
 val Enum = "com.beachape" %% "enumeratum" % "1.7.2"
