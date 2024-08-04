@@ -27,3 +27,7 @@ examples/data-to-scan/tweets
 examples/data-to-scan/tweets_avro
 examples/data-to-scan/users
 examples/data-to-scan/users_avro
+.metals
+.vscode
+project/metals.sbt
+.bloop
